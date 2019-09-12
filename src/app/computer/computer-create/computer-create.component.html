@@ -1,0 +1,34 @@
+<div class="dialog-box">
+    <h1 mat-dialog-title i18n >Create computer</h1>
+    <p class="error-message"*ngIf="dateValidator()" i18n >Dates are incoherent.</p>
+    <div mat-dialog-content class="custom-modal">
+      <p i18n >Computer Name</p>
+      <mat-form-field>
+        <input matInput [(ngModel)]="data.computer.name">
+      </mat-form-field>
+      <p i18n >Computer Introduced</p>
+      <mat-form-field>
+        <input disabled matInput [min]="minDate" [max]="maxDate" [ngClass]="{'error-message': dateValidator()}" [matDatepicker]="introducedPicker" i18n-placeholder placeholder="Choose a introduced date" [(ngModel)]="data.computer.introduced">
+        <mat-datepicker-toggle matSuffix [for]="introducedPicker"></mat-datepicker-toggle>
+        <mat-datepicker #introducedPicker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <p i18n >Computer Discontinued</p>
+      <mat-form-field>
+        <input disabled matInput [min]="minDate" [max]="maxDate" [ngClass]="{'error-message': dateValidator()}" [matDatepicker]="discontinuedPicker" i18n-placeholder placeholder="Choose a discontinued date" [(ngModel)]="data.computer.discontinued">
+        <mat-datepicker-toggle matSuffix [for]="discontinuedPicker"></mat-datepicker-toggle>
+        <mat-datepicker #discontinuedPicker disabled="false"></mat-datepicker>
+      </mat-form-field>
+      <p i18n >Company</p>
+      <mat-form-field>
+          <mat-select placeholder="Choose your company" i18n-placeholder [(ngModel)]="data.computer.companyId">
+            <mat-option *ngFor="let company of companyList" [value]="company.id">
+              {{company.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button (click)="onNoClick()" i18n >Cancel</button>
+      <button mat-button [mat-dialog-close]="data.computer" cdkFocusInitial [disabled]="dateValidator() || data.computer.name == null || data.computer.name?.length == 0">OK</button>
+    </div>
+  </div>

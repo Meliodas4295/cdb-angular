@@ -1,0 +1,79 @@
+<div class="table-header">
+  <input type="text" name="search" placeholder="Search..">
+  <button mat-icon-button class="add-button" aria-label="Example icon-button with a heart icon" (click)="createDialog()">
+    <mat-icon class="add-icon" svgIcon="add"></mat-icon>
+  </button>
+</div>
+<div class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" matSort>
+<div >
+<ng-container matColumnDef="select">
+  <th mat-header-cell *matHeaderCellDef>
+    <div class="block">
+    <mat-checkbox (change)="$event ? masterToggle() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  [aria-label]="checkboxLabel()">
+    </mat-checkbox>
+    </div>
+    <div class="block">
+      <p>-</p>
+    </div>
+    <div class="block">
+      <mat-icon class="example-icon" svgIcon="delete" aria-hidden="false" aria-label="Example heart icon">favorite</mat-icon>
+    </div>
+    </th>
+  <td mat-cell *matCellDef="let row">
+    <section class="example-section">
+    <mat-checkbox (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                  [aria-label]="checkboxLabel(row)">
+    </mat-checkbox>
+    </section>
+  </td>
+</ng-container>
+</div>
+
+<ng-container matColumnDef="name">
+<th mat-header-cell *matHeaderCellDef i18n>Name</th>
+<td mat-cell *matCellDef="let element" > {{element.name}} </td>
+</ng-container>
+<ng-container matColumnDef="introduced">
+<th mat-header-cell *matHeaderCellDef i18n >Introduced</th>
+<td mat-cell *matCellDef="let element"> {{element.introduced}} </td>
+</ng-container>
+<ng-container matColumnDef="discontinued">
+<th mat-header-cell *matHeaderCellDef i18n >Discontinued</th>
+<td mat-cell *matCellDef="let element"> {{element.discontinued}} </td>
+</ng-container>
+<ng-container matColumnDef="company">
+<th mat-header-cell *matHeaderCellDef i18n >Company Id</th>
+<td mat-cell *matCellDef="let element"> {{element.companyId}} </td>
+</ng-container>
+<ng-container matColumnDef="edit">
+  <th mat-header-cell *matHeaderCellDef i18n ></th>
+  <td mat-cell *matCellDef="let element">
+    <div class="edit-delete-button">
+      <button mat-icon-button class="edit-button" aria-label="Example icon-button with a heart icon">
+          <mat-icon class="edit-icon" svgIcon="edit"></mat-icon>
+      </button>
+      <button mat-icon-button name="delete-button" aria-label="Example icon-button with a heart icon">
+          <mat-icon class="delete-icon" svgIcon="delete"></mat-icon>
+      </button>
+    </div>
+  </td>
+</ng-container>
+
+<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+<tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
+</tr>
+</table>
+
+<mat-paginator [length]="length"
+[pageIndex]="pageIndex"
+[pageSize]="pageSize"
+[pageSizeOptions]="[5, 10, 25, 100]"
+(page)="pageEvent = getPage($event)"
+showFirstLastButtons></mat-paginator>
+</div>
